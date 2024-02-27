@@ -1,3 +1,5 @@
+#include "libft.h"
+
 int fi_isdigit(int digit)
 {
     if (digit >= '0' && digit <= '9')
