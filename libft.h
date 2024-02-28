@@ -46,7 +46,7 @@ int				ft_isprint(int c);
 
 char			*ft_itoa(int n);
 
-void			*ft_memccpy(void *dst, const void *src, int c, size_t n);
+void			*ft_memccpy(void *dest, const void *src, int c, size_t n);
 
 void			*ft_memchr(const void *s, int c, size_t n);
 
@@ -74,9 +74,9 @@ char			*ft_strdup(const char *s1);
 
 char			*ft_strjoin(char const *s1, char const *s2);
 
-size_t			ft_strlcat(char *dst, const char *src, size_t size);
+size_t			ft_strlcat(char *dest, const char *src, size_t size);
 
-size_t			ft_strlcpy(char *dst, const char *src, size_t size);
+size_t			ft_strlcpy(char *dest, const char *src, size_t size);
 
 size_t			ft_strlen(const char *s);
 
