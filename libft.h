@@ -76,7 +76,7 @@ int				ft_atoi(const char *str);
 
 void			*ft_calloc(size_t count, size_t size);
 
-char			*ft_strdup(const char *s1);
+char			*ft_strdup(const char *str);
 
 
 
