@@ -1,48 +1,87 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jlievano <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/03 21:10:50 by jlievano          #+#    #+#             */
+/*   Updated: 2024/03/03 21:30:24 by jlievano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-static int digit_count(int number)
+static int	digit_count(int number)
 {
-    int count = (number == 0) ? 1 : 0;
+	int	count;
 
-    while (number != 0)
-    {
-        number /= 10;
-        count++;
-    }
-    return count;
+	if (number == 0)
+	{
+		count = 1;
+	}
+	else
+	{
+		count = 0;
+	}
+	while (number != 0)
+	{
+		number /= 10;
+		count++;
+	}
+	return (count);
 }
 
-static int is_negative(int number)
+static int	is_negative(int number)
 {
-    return number < 0 ? 1 : 0;
+	if (number < 0)
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
 }
 
-static char *memory_allocation(int amount_digits, int is_negative)
+static char	*memory_allocation(int amount_digits, int is_negative)
 {
-    char *str;
-    if (is_negative)
-    {
-        str = (char *)malloc(sizeof(char) * (amount_digits + 2));
-        if (!str)
-            return NULL;
-    }
-    else
-    {
-        str = (char *)malloc(sizeof(char) * (amount_digits + 1));
-        if (!str)
-            return NULL;
-    }
-    return str;
+	char	*str;
+
+	if (is_negative)
+	{
+		str = (char *)malloc(sizeof(char) * (amount_digits + 2));
+		if (!str)
+			return (NULL);
+	}
+	else
+	{
+		str = (char *)malloc(sizeof(char) * (amount_digits + 1));
+		if (!str)
+			return (NULL);
+	}
+	return (str);
 }
 
-//Static function that gets an amount of digits, a pointer to a string and the number to convert
-static char *get_str(char *str, int number, int amount_digits, int is_negative)
+//Static function that gets an amount of digits, a pointer to a
+//string and the number to convert
+static char	*get_str(char *str, int number, int amount_digits, int is_negative)
 {
-    int i = is_negative ? 1 : 0; // Start index at 1 if negative to leave space for '-'
+	int	i;
+
+	if (is_negative)
+	{
+		i = 1;
+	}
+	else
+	{
+		i = 0;
+	}
+    	//int i = is_negative ? 1 : 0; // Start index at 1 if negative to leave space for '-'
 
     // Add the negative sign if needed
-    if (is_negative)
-        str[0] = '-';
+	if (is_negative)
+        	str[0] = '-';
 
     // Convert number to string from the end
     str[amount_digits + i] = '\0'; // Place the null terminator
