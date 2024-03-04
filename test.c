@@ -12,6 +12,8 @@ extern int ft_isalpha(int character);
 extern int ft_isascii(int c);
 extern int ft_isprint(int c);
 extern char *ft_itoa(int n);
+extern void *ft_memchr(const void *str, int c, size_t n);
+extern void *ft_memcpy(void *dest, const void *src, size_t len);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -137,6 +139,30 @@ void run_test_ft_itoa(int n, const char *expected)
     free(result); // Free the allocated string
 }
 
+void run_test_ft_memchr(const char *str, int c, size_t n)
+{
+    const void *result = ft_memchr(str, c, n);
+    const void *expected = memchr(str, c, n);
+
+    if (result == expected) {
+        printf("Test passed: ft_memchr(\"%s\", '%c', %zu) returned %p\n", str, c, n, result);
+    } else {
+        printf("Test failed: ft_memchr(\"%s\", '%c', %zu) returned %p, expected %p\n", str, c, n, result, expected);
+    }
+}
+
+void run_test_ft_memcpy(void *dest, const void *src, size_t len)
+{
+    void *result = ft_memcpy(dest, src, len);
+    void *expected = memcpy(dest, src, len);
+
+    if (result == expected || (result != NULL && expected != NULL && memcmp(result, expected, len) == 0)) {
+        printf("Test passed: ft_memcpy returned %p\n", result);
+    } else {
+        printf("Test failed: ft_memcpy returned %p, expected %p\n", result, expected);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -238,6 +264,36 @@ int main()
     run_test_ft_itoa(0, "0"); // Zero
     run_test_ft_itoa(2147483647, "2147483647"); // Maximum positive integer
     run_test_ft_itoa(-2147483648, "-2147483648"); // Minimum negative integer
+
+    draw_sep();
+
+
+    // Run the test cases for ft_memchr
+    fn_to_test("ft_memchr");
+    char input1[] = "Hello, world!";
+    run_test_ft_memchr(input1, 'o', 12); // Character found within the specified length
+    run_test_ft_memchr(input1, 'z', 12); // Character not found within the specified length
+    run_test_ft_memchr(input1, 'H', 1); // Character found at the start of the string
+    run_test_ft_memchr(input1, '!', 12); // Character found at the end of the string
+    run_test_ft_memchr(input1, 'l', 3); // Character found within the specified length
+    run_test_ft_memchr(input1, 'o', 0); // Searching in an empty string
+    run_test_ft_memchr(input1, '\0', 12); // Searching for null character
+    run_test_ft_memchr(input1, 'o', 5); // Character not found within the specified length
+    run_test_ft_memchr(input1, 'o', 13); // Character found within the specified length
+    run_test_ft_memchr(input1, 'o', 20); // Character found within the specified length (exceeding the string length)
+
+    draw_sep();
+
+    // Run the test cases for ft_memcpy
+    fn_to_test("ft_memcpy");
+    char inputmemcpy[20] = "Hello, world!";
+    char output1[20];
+    run_test_ft_memcpy(output1, inputmemcpy, 12); // Copying within the specified length
+    run_test_ft_memcpy(output1, inputmemcpy, 5); // Copying within a shorter length
+    run_test_ft_memcpy(output1, inputmemcpy, 0); // Copying with length 0
+    run_test_ft_memcpy(output1, inputmemcpy, 13); // Copying within the specified length (exceeding the source length)
+    run_test_ft_memcpy(output1, inputmemcpy, 20); // Copying the entire source length
+    run_test_ft_memcpy(output1, inputmemcpy, 21); // Copying more than the source length
 
     draw_sep();
 
