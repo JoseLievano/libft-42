@@ -46,4 +46,7 @@ re:				fclean $(NAME)
 bonus:			$(OBJS) $(BONUS_OBJS)
 				ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 
-.PHONY:			all clean fclean re bonus
+test:	libft.a
+		gcc -Wall -Wextra -Werror -o test test.c -L -lft
+
+.PHONY:			all clean fclean re bonus test
