@@ -14,6 +14,7 @@ extern int ft_isprint(int c);
 extern char *ft_itoa(int n);
 extern void *ft_memchr(const void *str, int c, size_t n);
 extern void *ft_memcpy(void *dest, const void *src, size_t len);
+extern void	*ft_memmove(void *dest, const void *src, size_t len);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -163,6 +164,23 @@ void run_test_ft_memcpy(void *dest, const void *src, size_t len)
     }
 }
 
+void run_test_ft_memmove(void *dest, const void *src, size_t len)
+{
+    char *temp = malloc(len);
+    memcpy(temp, src, len); // Backup the source to handle the overlap correctly
+
+    void *result = ft_memmove(dest, src, len);
+    void *expected = memmove(dest, temp, len); // Use backup for a fair comparison
+
+    if (result == expected && memcmp(dest, temp, len) == 0) {
+        printf("Test passed: ft_memmove returned %p\n", result);
+    } else {
+        printf("Test failed: ft_memmove returned %p, expected %p\n", result, expected);
+    }
+
+    free(temp);
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -294,6 +312,25 @@ int main()
     run_test_ft_memcpy(output1, inputmemcpy, 13); // Copying within the specified length (exceeding the source length)
     run_test_ft_memcpy(output1, inputmemcpy, 20); // Copying the entire source length
     run_test_ft_memcpy(output1, inputmemcpy, 21); // Copying more than the source length
+
+    draw_sep();
+
+    // Run the test cases for ft_memmove
+    fn_to_test("ft_memmove");
+    char inputmemmove[20] = "Hello, world!";
+    char output2[20];
+
+    // Overlapping regions: dest is ahead of src
+    run_test_ft_memmove(inputmemmove + 6, inputmemmove, 5); // Moving a part of the string within itself
+    // Overlapping regions: src is ahead of dest
+    run_test_ft_memmove(inputmemmove, inputmemmove + 6, 5); // Moving a part of the string within itself
+    // Non-overlapping regions
+    run_test_ft_memmove(output2, inputmemmove, 12); // Copying within the specified length
+    run_test_ft_memmove(output2, inputmemmove, 5);  // Copying within a shorter length
+    run_test_ft_memmove(output2, inputmemmove, 0);  // Copying with length 0
+    run_test_ft_memmove(output2, inputmemmove, 13); // Copying within the specified length (exceeding the source length)
+    run_test_ft_memmove(output2, inputmemmove, 20); // Copying the entire source length
+    run_test_ft_memmove(output2, inputmemmove, 21); // Copying more than the source length
 
     draw_sep();
 
