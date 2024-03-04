@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlievano <jlievano@student.42luxembourg.lu>+#+  +:+       +#+        */
+/*   By: jlievano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/21 14:31:33 by jlievano          #+#    #+#             */
-/*   Updated: 2024/02/25 02:53:10 by jlievano         ###   ########.fr       */
+/*   Created: 2024/03/04 01:03:17 by jlievano          #+#    #+#             */
+/*   Updated: 2024/03/04 01:04:42 by jlievano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-typedef	struct	s_list
+typedef	struct s_list
 {
-    void			*content;
-    struct s_list	*next;
-}				t_list;
+	void		*content;
+	struct s_list	*next;
+}	t_list;
 
 typedef struct	s_split_next
 {
