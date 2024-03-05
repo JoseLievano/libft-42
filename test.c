@@ -35,6 +35,10 @@ extern char *ft_strmapi(char const *s, char (*f)(unsigned int, char));
 extern int ft_strncmp(const char *str1, const char *str2, size_t len);
 extern char *ft_strnstr(const char *haystack, const char *needle, size_t len);
 extern char *ft_strrchr(const char *str, int c);
+extern char *ft_strtrim(const char *s1, const char *set);
+extern char *ft_substr(char const *s, unsigned int start, size_t len);
+extern int ft_tolower(int c);
+extern int ft_toupper(int c);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -490,6 +494,51 @@ void run_test_ft_strrchr(const char *str, int c, const char *expected)
     }
 }
 
+void run_test_ft_strtrim(const char *input, const char *set, const char *expected)
+{
+    char *result = ft_strtrim(input, set);
+    if ((result == NULL && expected == NULL) || (result && expected && strcmp(result, expected) == 0)) {
+        printf("Test passed: ft_strtrim(\"%s\", \"%s\") returned \"%s\"\n", input, set, result);
+    } else {
+        printf("Test failed: ft_strtrim(\"%s\", \"%s\") returned \"%s\", expected \"%s\"\n", input, set, result, expected);
+    }
+    free(result); // Assuming your ft_strtrim allocates memory even for empty strings
+}
+
+void run_test_ft_substr(const char *s, unsigned int start, size_t len, const char *expected)
+{
+    char *result = ft_substr(s, start, len);
+    int success = (expected == NULL && result == NULL) || (expected != NULL && result != NULL && strcmp(result, expected) == 0);
+
+    if (success) {
+        printf("Test passed: ft_substr(\"%s\", %u, %zu) returned \"%s\"\n", s ? s : "NULL", start, len, result ? result : "NULL");
+    } else {
+        printf("Test failed: ft_substr(\"%s\", %u, %zu) returned \"%s\", expected \"%s\"\n", s ? s : "NULL", start, len, result ? result : "NULL", expected ? expected : "NULL");
+    }
+
+    free(result); // Remember to free the memory allocated by ft_substr
+}
+
+void run_test_ft_tolower(int input, int expected)
+{
+    int result = ft_tolower(input);
+    if (result == expected) {
+        printf("Test passed: ft_tolower('%c') returned '%c'\n", input, result);
+    } else {
+        printf("Test failed: ft_tolower('%c') returned '%c', expected '%c'\n", input, result, expected);
+    }
+}
+
+void run_test_ft_toupper(int input, int expected)
+{
+    int result = ft_toupper(input);
+    if (result == expected) {
+        printf("Test passed: ft_toupper('%c') returned '%c'\n", input, result);
+    } else {
+        printf("Test failed: ft_toupper('%c') returned '%c', expected '%c'\n", input, result, expected);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -846,6 +895,59 @@ int main()
     run_test_ft_strrchr("", 'a', NULL); // Empty string
     run_test_ft_strrchr("a\0b\0c", 'b', NULL); // NULL character in the middle of the string
     run_test_ft_strrchr("a\0b\0c", '\0', ""); // NULL character at the end
+    draw_sep();
+
+    // Add this code in your main function to run tests for ft_strtrim
+    fn_to_test("ft_strtrim");
+    run_test_ft_strtrim(" Hello World! ", " ", "Hello World!");
+    run_test_ft_strtrim("Hello World!", "Hdle", "o Wor");
+    run_test_ft_strtrim("Hello World!", "xyz", "Hello World!");
+    run_test_ft_strtrim("xyzHello World!xyz", "xyz", "Hello World!");
+    run_test_ft_strtrim("", " ", "");
+    run_test_ft_strtrim(" ", " ", "");
+    run_test_ft_strtrim("Hello World!", "", "Hello World!");
+    run_test_ft_strtrim("Hello World!", NULL, "Hello World!");
+    run_test_ft_strtrim(NULL, " ", NULL);
+    draw_sep();
+
+    // Run the test cases for ft_substr
+    fn_to_test("ft_substr");
+    run_test_ft_substr("Hello World", 6, 5, "World");
+    run_test_ft_substr("libft-42", 0, 5, "libft");
+    run_test_ft_substr("1234567890", 3, 4, "4567");
+    run_test_ft_substr("TestString", 5, 10, "String"); // len longer than string length after start
+    run_test_ft_substr("EdgeCase", 20, 5, ""); // start index out of bounds
+    run_test_ft_substr("AnotherTest", 0, 0, ""); // zero length
+    run_test_ft_substr(NULL, 5, 5, NULL); // NULL string
+    run_test_ft_substr("MemoryTest", 0, (size_t)-1, "MemoryTest"); // len is maximum size_t, simulating potential overflow
+    draw_sep();
+
+    // Run the test cases for ft_tolower
+    fn_to_test("ft_tolower");
+    run_test_ft_tolower('A', 'a');
+    run_test_ft_tolower('Z', 'z');
+    run_test_ft_tolower('a', 'a'); // Lowercase remains unchanged
+    run_test_ft_tolower('z', 'z'); // Lowercase remains unchanged
+    run_test_ft_tolower('0', '0'); // Digit should remain unchanged
+    run_test_ft_tolower('-', '-'); // Non-alphabetic should remain unchanged
+    run_test_ft_tolower(' ', ' '); // Space should remain unchanged
+    run_test_ft_tolower('\t', '\t'); // Tab should remain unchanged
+    run_test_ft_tolower('!', '!'); // Non-alphabetic should remain unchanged
+    run_test_ft_tolower('@', '@'); // Non-alphabetic should remain unchanged
+    draw_sep();
+
+    // Run the test cases for ft_toupper
+    fn_to_test("ft_toupper");
+    run_test_ft_toupper('a', 'A');
+    run_test_ft_toupper('z', 'Z');
+    run_test_ft_toupper('A', 'A'); // Uppercase remains unchanged
+    run_test_ft_toupper('Z', 'Z'); // Uppercase remains unchanged
+    run_test_ft_toupper('0', '0'); // Digit should remain unchanged
+    run_test_ft_toupper('-', '-'); // Non-alphabetic should remain unchanged
+    run_test_ft_toupper(' ', ' '); // Space should remain unchanged
+    run_test_ft_toupper('\t', '\t'); // Tab should remain unchanged
+    run_test_ft_toupper('!', '!'); // Non-alphabetic should remain unchanged
+    run_test_ft_toupper('@', '@'); // Non-alphabetic should remain unchanged
     draw_sep();
 
     return 0;
