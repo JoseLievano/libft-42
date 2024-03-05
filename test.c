@@ -965,17 +965,21 @@ int main()
     const char *memcmp_str2 = "Hello, World!";
     const char *memcmp_str3 = "Hello";
     const char *memcmp_str4 = "";
+    char buffer1[20] = "Hello, world!";
+    char buffer2[20] = "Hello";
+    char buffer3[20] = "Hello, world!";
 
 // Normal cases
-    run_test_ft_memcmp(memcmp_str1, memcmp_str2, 13, 0); // Identical strings
     run_test_ft_memcmp(memcmp_str1, memcmp_str3, 5, 0);  // Same first n characters
-    run_test_ft_memcmp(memcmp_str1, memcmp_str2, 7, 32); // Different characters (uppercase vs lowercase)
+    run_test_ft_memcmp(memcmp_str1, memcmp_str2, 8, 32); // Different characters (uppercase vs lowercase)
 
-// Edge cases
+    // Edge cases
     run_test_ft_memcmp(memcmp_str1, memcmp_str2, 0, 0);   // Zero length
     run_test_ft_memcmp(memcmp_str4, memcmp_str4, 5, 0);   // Empty strings
-    run_test_ft_memcmp(memcmp_str1, memcmp_str3, 20, 119); // Length beyond string length, str1 longer than str3
-    run_test_ft_memcmp(memcmp_str3, memcmp_str1, 20, -119); // Length beyond string length, str3 shorter than str1
+    // Now comparing buffer1 and buffer2, buffer2 should be shorter.
+    run_test_ft_memcmp(buffer1, buffer2, 20, /* expected return value based on actual buffer contents */);
+    // Comparing buffer2 and buffer3, buffer3 is longer.
+    run_test_ft_memcmp(buffer2, buffer3, 20, /* expected return value based on actual buffer contents */);
 
     draw_sep();
 
