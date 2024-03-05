@@ -30,6 +30,8 @@ extern void ft_striteri(char *s, void (*f)(unsigned int, char*));
 extern char *ft_strjoin(char const *s1, char const *s2);
 extern size_t ft_strlcat(char *dest, const char *src, size_t size);
 extern size_t ft_strlcpy(char *dest, const char *src, size_t size);
+extern size_t ft_strlen(const char *str);
+extern char *ft_strmapi(char const *s, char (*f)(unsigned int, char));
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -52,6 +54,32 @@ void modify_char(unsigned int i, char *c) {
     if (c) {
         *c += i;
     }
+}
+
+char uppercase_char(unsigned int i, char c)
+{
+    if (c >= 'a' && c <= 'z')
+        return c - 32;
+    return c;
+}
+
+char increment_digit(unsigned int i, char c)
+{
+    if (c >= '0' && c <= '9')
+        return c + 1 <= '9' ? c + 1 : '0';
+    return c;
+}
+
+char do_nothing(unsigned int i, char c)
+{
+    return c;
+}
+
+char escape_newline(unsigned int i, char c)
+{
+    if (c == '\n')
+        return 'n';
+    return c;
 }
 
 void run_test_ft_atoi(const char *input, int expected)
@@ -402,6 +430,31 @@ void run_test_ft_strlcpy(const char *src, size_t size, const char *expected)
     free(dest);
 }
 
+void run_test_ft_strlen(const char *input, size_t expected)
+{
+    size_t result = ft_strlen(input);
+    if (result == expected) {
+        printf("Test passed: ft_strlen(\"%s\") returned %zu\n", input, result);
+    } else {
+        printf("Test failed: ft_strlen(\"%s\") returned %zu, expected %zu\n", input, result, expected);
+    }
+}
+
+void run_test_ft_strmapi(const char *input, char (*f)(unsigned int, char))
+{
+    char *result = ft_strmapi(input, f);
+
+    if (input == NULL && result == NULL) {
+        printf("Test passed: ft_strmapi(NULL) returned NULL\n");
+    } else if (result == NULL) {
+        printf("Test failed: ft_strmapi(\"%s\") returned NULL\n", input);
+    } else {
+        printf("Test passed: ft_strmapi(\"%s\") returned \"%s\"\n", input, result);
+    }
+
+    free(result); // Free the allocated string if not NULL
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -698,6 +751,26 @@ int main()
     run_test_ft_strlcpy("Edge case", 9, "Edge cas"); // size equals src length
     run_test_ft_strlcpy("Another test", 1, ""); // non-zero size that's too small
     run_test_ft_strlcpy("Lorem ipsum dolor sit amet", 20, "Lorem ipsum dolor s"); // random text
+    draw_sep();
+
+    // Run the test cases for ft_strlen
+    fn_to_test("ft_strlen");
+    run_test_ft_strlen("", 0); // Empty string
+    run_test_ft_strlen("Hello", 5); // Normal string
+    run_test_ft_strlen("Another string with spaces", 27); // String with spaces
+    run_test_ft_strlen("1234567890", 10); // Numeric string
+    run_test_ft_strlen("String with\nnewline", 21); // String with newline
+    run_test_ft_strlen("Non-printable \x01\x02\x03", 18); // String with non-printable characters
+    draw_sep();
+
+
+    // Run the test cases for ft_strmapi
+    fn_to_test("ft_strmapi");
+    run_test_ft_strmapi("Hello, World!", uppercase_char);
+    run_test_ft_strmapi("12345", increment_digit);
+    run_test_ft_strmapi("", do_nothing);
+    run_test_ft_strmapi(NULL, do_nothing); // Edge case: NULL string
+    run_test_ft_strmapi("Edge\nCase", escape_newline);
     draw_sep();
 
     return 0;
