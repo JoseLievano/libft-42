@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <ctype.h>
 
 // Link to your libft library
@@ -16,6 +17,7 @@ extern void *ft_memchr(const void *str, int c, size_t n);
 extern void *ft_memcpy(void *dest, const void *src, size_t len);
 extern void	*ft_memmove(void *dest, const void *src, size_t len);
 extern void *ft_memset(void *str, int c, size_t len);
+extern void ft_putchar_fd(char c, int fd);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -190,6 +192,13 @@ void run_test_ft_memset(char *buffer, int c, size_t len, char *expected)
     } else {
         printf("Test failed: ft_memset did not set the first %zu bytes of the buffer correctly\n", len);
     }
+}
+
+void run_test_ft_putchar_fd(char c, int fd)
+{
+    printf("Testing ft_putchar_fd with char '%c' and file descriptor %d\n", c, fd);
+    ft_putchar_fd(c, fd);
+    printf("\n"); // Just print a newline for clarity in the output
 }
 
 int main()
@@ -368,6 +377,14 @@ int main()
     memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
     run_test_ft_memset(buffer, '2', 1, "2XXXXXXXXX"); // Set only the first character
     draw_sep();
+
+
+    // Test for ft_putchar_fd
+    fn_to_test("ft_putchar_fd");
+    run_test_ft_putchar_fd('a', 1); // Standard output
+    run_test_ft_putchar_fd('Z', 2); // Error output, usually the terminal
+    draw_sep();
+
 
     return 0;
 }
