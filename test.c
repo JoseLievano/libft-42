@@ -370,7 +370,7 @@ void run_test_ft_strjoin(const char *s1, const char *s2, const char *expected)
     free(result); // Free allocated memory to avoid memory leaks
 }
 
-void run_test_ft_strlcat(char *dest, const char *src, size_t size, size_t expected)
+void run_test_ft_strlcat(char *dest, const char *src, size_t size)
 {
     char dest_copy[256]; // Ensure this is large enough for your tests
     strncpy(dest_copy, dest, sizeof(dest_copy));
@@ -655,34 +655,34 @@ int main()
     fn_to_test("ft_strlcat");
     // Test 1: Normal concatenation
     char dest1[20] = "Hello";
-    run_test_ft_strlcat(dest1, " World", sizeof(dest1), strlcat(dest1, " World", sizeof(dest1)));
+    run_test_ft_strlcat(dest1, " World", sizeof(dest1));
     // Test 2: Buffer too small to concatenate
     char dest2[10] = "Hello";
-    run_test_ft_strlcat(dest2, " World", sizeof(dest2), strlcat(dest2, " World", sizeof(dest2)));
+    run_test_ft_strlcat(dest2, " World", sizeof(dest2));
     // Test 3: Empty source string
     char dest3[20] = "Hello";
-    run_test_ft_strlcat(dest3, "", sizeof(dest3), strlcat(dest3, "", sizeof(dest3)));
+    run_test_ft_strlcat(dest3, "", sizeof(dest3));
     // Test 4: Empty destination buffer
     char dest4[20] = "";
-    run_test_ft_strlcat(dest4, "World", sizeof(dest4), strlcat(dest4, "World", sizeof(dest4)));
+    run_test_ft_strlcat(dest4, "World", sizeof(dest4));
     // Test 5: Size parameter is zero
     char dest5[20] = "Hello";
-    run_test_ft_strlcat(dest5, " World", 0, strlcat(dest5, " World", 0));
+    run_test_ft_strlcat(dest5, " World", 0);
     // Test 6: Size parameter is smaller than the destination string length
     char dest6[20] = "Hello";
-    run_test_ft_strlcat(dest6, " World", 3, strlcat(dest6, " World", 3));
+    run_test_ft_strlcat(dest6, " World", 3);
     // Test 7: Size parameter is exactly the destination string length
     char dest7[20] = "Hello";
-    run_test_ft_strlcat(dest7, " World", 5, strlcat(dest7, " World", 5));
+    run_test_ft_strlcat(dest7, " World", 5);
     // Test 8: Size parameter is one less than the destination string length
     char dest8[20] = "Hello";
-    run_test_ft_strlcat(dest8, " World", 4, strlcat(dest8, " World", 4));
+    run_test_ft_strlcat(dest8, " World", 4);
     // Test 9: Large source string
     char dest9[50] = "Hello";
-    run_test_ft_strlcat(dest9, " this is a very long world that won't fully fit", sizeof(dest9), strlcat(dest9, " this is a very long world that won't fully fit", sizeof(dest9)));
+    run_test_ft_strlcat(dest9, " this is a very long world that won't fully fit", sizeof(dest9));
     // Test 10: Size parameter is just enough to fit the source string
     char dest10[20] = "12345";
-    run_test_ft_strlcat(dest10, "6789", 10, strlcat(dest10, "6789", 10));
+    run_test_ft_strlcat(dest10, "6789", 10);
     draw_sep();
 
     return 0;
