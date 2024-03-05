@@ -352,7 +352,6 @@ void run_test_ft_striteri(char *input, void (*f)(unsigned int, char*), char *exp
     }
 
     free(test_str); // Clean up
-    draw_sep();
 }
 
 int main()
