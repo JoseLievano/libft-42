@@ -32,6 +32,8 @@ extern size_t ft_strlcat(char *dest, const char *src, size_t size);
 extern size_t ft_strlcpy(char *dest, const char *src, size_t size);
 extern size_t ft_strlen(const char *str);
 extern char *ft_strmapi(char const *s, char (*f)(unsigned int, char));
+extern int ft_strncmp(const char *str1, const char *str2, size_t len);
+extern char *ft_strnstr(const char *haystack, const char *needle, size_t len);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -455,6 +457,27 @@ void run_test_ft_strmapi(const char *input, char (*f)(unsigned int, char))
     free(result); // Free the allocated string if not NULL
 }
 
+void run_test_ft_strncmp(const char *str1, const char *str2, size_t len, int expected)
+{
+    int result = ft_strncmp(str1, str2, len);
+    if (result == expected) {
+        printf("Test passed: ft_strncmp(\"%s\", \"%s\", %zu) returned %d\n", str1, str2, len, result);
+    } else {
+        printf("Test failed: ft_strncmp(\"%s\", \"%s\", %zu) returned %d, expected %d\n", str1, str2, len, result, expected);
+    }
+    draw_sep();
+}
+
+void run_test_ft_strnstr(const char *haystack, const char *needle, size_t len, const char *expected)
+{
+    char *result = ft_strnstr(haystack, needle, len);
+    if ((result == expected) || (expected && result && strcmp(result, expected) == 0)) {
+        printf("Test passed: ft_strnstr(\"%s\", \"%s\", %zu) returned \"%s\"\n", haystack, needle, len, result);
+    } else {
+        printf("Test failed: ft_strnstr(\"%s\", \"%s\", %zu) returned \"%s\", expected \"%s\"\n", haystack, needle, len, result, expected);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -773,5 +796,32 @@ int main()
     run_test_ft_strmapi("Edge\nCase", escape_newline);
     draw_sep();
 
+    // Run the test cases for ft_strncmp
+    fn_to_test("ft_strncmp");
+    run_test_ft_strncmp("hello", "hello", 5, 0); // Equal strings
+    run_test_ft_strncmp("hello", "hell", 5, 'o'); // First string is longer
+    run_test_ft_strncmp("hell", "hello", 5, -'o'); // Second string is longer
+    run_test_ft_strncmp("hello", "Hello", 5, 'h' - 'H'); // Different case
+    run_test_ft_strncmp("hello", "world", 5, 'h' - 'w'); // Completely different
+    run_test_ft_strncmp("", "", 5, 0); // Both strings are empty
+    run_test_ft_strncmp("123", "1234", 3, 0); // Compare part of the string
+    run_test_ft_strncmp("1234", "123", 3, 0); // Compare part of the string
+    run_test_ft_strncmp("123", "123\x00abc", 100, 0); // Null character in the second string
+    run_test_ft_strncmp("\xff", "\x00", 1, 0xff); // Test unsigned char comparison
+
+    // Run the test cases for ft_strnstr
+    fn_to_test("ft_strnstr");
+    run_test_ft_strnstr("hello world", "world", 11, "world");
+    run_test_ft_strnstr("hello world", "world", 5, NULL); // Needle beyond len
+    run_test_ft_strnstr("hello world", "", 11, "hello world"); // Empty needle
+    run_test_ft_strnstr("", "world", 0, NULL); // Empty haystack
+    run_test_ft_strnstr("abc", "abcd", 3, NULL); // Needle longer than haystack length
+    run_test_ft_strnstr("hello world", "world", 0, NULL); // Zero len
+    run_test_ft_strnstr("hello world", "world", (size_t)-1, "world"); // Max size_t value
+    run_test_ft_strnstr("hello world", "o w", 11, "o world"); // Substring in the middle
+    run_test_ft_strnstr("hello world", "hello world", 11, "hello world"); // Needle equals haystack
+    run_test_ft_strnstr("hello world", "x", 11, NULL); // Non-existent character
+    run_test_ft_strnstr("hello world", "world", 10, NULL); // Needle starts at the limit of len
+    draw_sep();
     return 0;
 }
