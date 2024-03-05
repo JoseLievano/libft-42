@@ -430,6 +430,5 @@ int main()
     run_test_ft_putendl_fd("42", 1); // Standard output (stdout)
     run_test_ft_putendl_fd("", 1); // Empty string to stdout
     draw_sep();
-
     return 0;
 }
