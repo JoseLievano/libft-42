@@ -607,8 +607,8 @@ int main()
     run_test_ft_striteri("", modify_char, ""); // Empty string
     run_test_ft_striteri("zz", modify_char, "z{"); // Edge case with overflow potential
     run_test_ft_striteri(" ", modify_char, " "); // Single space character
-    run_test_ft_striteri("\n\t", modify_char, "\n\t"); // Non-modifiable characters
-    run_test_ft_striteri("1234", modify_char, "2468"); // Digits
+    run_test_ft_striteri("\n\t", modify_char, "\n\n"); // Non-modifiable characters
+    run_test_ft_striteri("1234", modify_char, "1357"); // Digits
     draw_sep();
 
     return 0;
