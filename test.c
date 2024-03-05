@@ -107,10 +107,12 @@ void run_test_ft_bzero(char *str, size_t len)
 
     ft_bzero(str, len);
 
-    if (memcmp(str, original, len) == 0) {
-        printf("Test passed: ft_bzero() successfully zeroed %zu bytes\n", len);
+    int test = memcmp(str, original, len);
+
+    if (test == 0) {
+        printf("Test passed: ft_bzero() successfully zeroed %zu bytes, result: %d\n", len, test);
     } else {
-        printf("Test failed: ft_bzero() did not zero %zu bytes\n", len);
+        printf("Test failed: ft_bzero() did not zero %zu bytes, result: %d\n", len, test);
     }
 }
 
@@ -973,8 +975,8 @@ int main()
     // Edge cases
     run_test_ft_memcmp(memcmp_str1, memcmp_str2, 0, 0);   // Zero length
     run_test_ft_memcmp(memcmp_str4, memcmp_str4, 5, 0);   // Empty strings
-    run_test_ft_memcmp(memcmp_str1, memcmp_str3, 6, ' '); // Comparison includes the null terminator of str3.
-    run_test_ft_memcmp(memcmp_str3, memcmp_str1, 6, -' '); // Comparison includes the null terminator of str3.
+    run_test_ft_memcmp(memcmp_str1, memcmp_str3, 6, ','); // Comparison includes the null terminator of str3.
+    run_test_ft_memcmp(memcmp_str3, memcmp_str1, 6, -','); // Comparison includes the null terminator of str3.
 
     draw_sep();
 
