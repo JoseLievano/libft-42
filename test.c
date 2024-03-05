@@ -18,6 +18,7 @@ extern void *ft_memcpy(void *dest, const void *src, size_t len);
 extern void	*ft_memmove(void *dest, const void *src, size_t len);
 extern void *ft_memset(void *str, int c, size_t len);
 extern void ft_putchar_fd(char c, int fd);
+extern void ft_putendl_fd(char *s, int fd);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -199,6 +200,44 @@ void run_test_ft_putchar_fd(char c, int fd)
     printf("Testing ft_putchar_fd with char '%c' and file descriptor %d\n", c, fd);
     ft_putchar_fd(c, fd);
     printf("\n"); // Just print a newline for clarity in the output
+}
+
+void run_test_ft_putendl_fd(char *s, int fd)
+{
+    // Redirect standard output to a temporary file to capture it
+    int original_stdout = dup(STDOUT_FILENO);
+    FILE* tmp = tmpfile();
+    int tmp_fd = fileno(tmp);
+
+    dup2(tmp_fd, STDOUT_FILENO);
+
+    // Call the function to test
+    ft_putendl_fd(s, fd);
+
+    // Flush the output to make sure it's all written to the temporary file
+    fflush(stdout);
+
+    // Reset standard output to the original one
+    dup2(original_stdout, STDOUT_FILENO);
+
+    // Read the output from the temporary file
+    rewind(tmp);
+    char buffer[1024] = {0}; // Adjust buffer size as necessary
+    fread(buffer, sizeof(char), 1023, tmp);
+
+    // Check if the output is as expected (s followed by newline)
+    char expected_output[1024];
+    sprintf(expected_output, "%s\n", s); // Expected output
+
+    if (strcmp(buffer, expected_output) == 0) {
+        printf("Test passed: ft_putendl_fd(\"%s\", %d) correctly output '%s'\n", s, fd, buffer);
+    } else {
+        printf("Test failed: ft_putendl_fd(\"%s\", %d) output '%s', expected '%s'\n", s, fd, buffer, expected_output);
+    }
+
+    // Close the temporary file and restore standard output
+    fclose(tmp);
+    close(original_stdout);
 }
 
 int main()
@@ -385,6 +424,12 @@ int main()
     run_test_ft_putchar_fd('Z', 2); // Error output, usually the terminal
     draw_sep();
 
+    // Add this code inside the main function, where you want to run the tests for ft_putendl_fd
+    fn_to_test("ft_putendl_fd");
+    run_test_ft_putendl_fd("Hello, world!", 1); // Standard output (stdout)
+    run_test_ft_putendl_fd("42", 1); // Standard output (stdout)
+    run_test_ft_putendl_fd("", 1); // Empty string to stdout
+    draw_sep();
 
     return 0;
 }
