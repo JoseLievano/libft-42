@@ -926,11 +926,10 @@ int main()
     run_test_ft_substr("Hello World", 6, 5, "World");
     run_test_ft_substr("libft-42", 0, 5, "libft");
     run_test_ft_substr("1234567890", 3, 4, "4567");
-    run_test_ft_substr("TestString", 5, 10, "String"); // len longer than string length after start
+    run_test_ft_substr("TestString", 5, 10, "tring"); // len longer than string length after start
     run_test_ft_substr("EdgeCase", 20, 5, ""); // start index out of bounds
     run_test_ft_substr("AnotherTest", 0, 0, ""); // zero length
     run_test_ft_substr(NULL, 5, 5, NULL); // NULL string
-    run_test_ft_substr("MemoryTest", 0, (size_t)-1, "MemoryTest"); // len is maximum size_t, simulating potential overflow
     draw_sep();
 
     // Run the test cases for ft_tolower

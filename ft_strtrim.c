@@ -30,6 +30,7 @@ static char *early_return(char const *s1, char const *set)
     if (!set){
         return (ft_strdup(s1));
     }
+    return (NULL);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
