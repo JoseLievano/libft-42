@@ -25,6 +25,7 @@ extern void ft_putnbr_fd(int n, int fd);
 extern void ft_putstr_fd(char *s, int fd);
 extern char **ft_split(char const *s, char c);
 extern char *ft_strchr(const char *str, int c);
+extern char *ft_strdup(const char *str);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -320,6 +321,17 @@ void run_test_ft_strchr(const char *input, int character, char *expected)
     }
 }
 
+void run_test_ft_strdup(const char *input)
+{
+    char *result = ft_strdup(input);
+    if (strcmp(result, input) == 0) {
+        printf("Test passed: ft_strdup(\"%s\") returned \"%s\"\n", input, result);
+    } else {
+        printf("Test failed: ft_strdup(\"%s\") did not match input\n", input);
+    }
+    free(result); // Don't forget to free the memory allocated by ft_strdup
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -556,6 +568,15 @@ int main()
     run_test_ft_strchr("", 'a', NULL); // Empty string
     draw_sep();
 
+
+    // Run the test cases for ft_strdup
+    fn_to_test("ft_strdup");
+    run_test_ft_strdup("Hello world");
+    run_test_ft_strdup("");
+    run_test_ft_strdup("42 is the answer to everything");
+    run_test_ft_strdup("A string with a \0 null byte"); // This will not show the null byte part
+    run_test_ft_strdup("Special characters !@#$%^&*()");
+    draw_sep();
 
     return 0;
 }
