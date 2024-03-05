@@ -15,6 +15,7 @@ extern char *ft_itoa(int n);
 extern void *ft_memchr(const void *str, int c, size_t n);
 extern void *ft_memcpy(void *dest, const void *src, size_t len);
 extern void	*ft_memmove(void *dest, const void *src, size_t len);
+extern void *ft_memset(void *str, int c, size_t len);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -181,6 +182,16 @@ void run_test_ft_memmove(void *dest, const void *src, size_t len)
     free(temp);
 }
 
+void run_test_ft_memset(char *buffer, int c, size_t len, char *expected)
+{
+    ft_memset(buffer, c, len);
+    if (memcmp(buffer, expected, len) == 0) {
+        printf("Test passed: ft_memset set the first %zu bytes of the buffer to '%c'\n", len, c);
+    } else {
+        printf("Test failed: ft_memset did not set the first %zu bytes of the buffer correctly\n", len);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -332,6 +343,30 @@ int main()
     run_test_ft_memmove(output2, inputmemmove, 20); // Copying the entire source length
     run_test_ft_memmove(output2, inputmemmove, 21); // Copying more than the source length
 
+    draw_sep();
+
+
+    // Run the test cases for ft_memset
+    fn_to_test("ft_memset");
+    char buffer[10];
+    // Initial test cases
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, 'a', 5, "aaaaaXXXXX");
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, '\0', 3, "\0\0\0XXXXXXX");
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, '1', 10, "1111111111");
+    // Additional test cases
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, 'Z', 0, "XXXXXXXXXX"); // No change expected
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, 'b', 9, "bbbbbbbbbX"); // Almost full buffer set
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, 255, 7, "\xFF\xFF\xFF\xFF\xFF\xFF\xFFXXX"); // Test with max unsigned char value
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, ' ', 10, "          "); // Set all to space character
+    memset(buffer, 'X', sizeof(buffer)); // Reset buffer to a known state
+    run_test_ft_memset(buffer, '2', 1, "2XXXXXXXXX"); // Set only the first character
     draw_sep();
 
     return 0;
