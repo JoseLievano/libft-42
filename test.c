@@ -34,6 +34,7 @@ extern size_t ft_strlen(const char *str);
 extern char *ft_strmapi(char const *s, char (*f)(unsigned int, char));
 extern int ft_strncmp(const char *str1, const char *str2, size_t len);
 extern char *ft_strnstr(const char *haystack, const char *needle, size_t len);
+extern char *ft_strrchr(const char *str, int c);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -478,6 +479,17 @@ void run_test_ft_strnstr(const char *haystack, const char *needle, size_t len, c
     }
 }
 
+void run_test_ft_strrchr(const char *str, int c, const char *expected)
+{
+    const char *result = ft_strrchr(str, c);
+    if ((expected == NULL && result == NULL) ||
+        (expected != NULL && result != NULL && strcmp(result, expected) == 0)) {
+        printf("Test passed: ft_strrchr(\"%s\", '%c') returned \"%s\"\n", str, c, result);
+    } else {
+        printf("Test failed: ft_strrchr(\"%s\", '%c') returned \"%s\", expected \"%s\"\n", str, c, result, expected);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -806,7 +818,7 @@ int main()
     run_test_ft_strncmp("", "", 5, 0); // Both strings are empty
     run_test_ft_strncmp("123", "1234", 3, 0); // Compare part of the string
     run_test_ft_strncmp("1234", "123", 3, 0); // Compare part of the string
-    run_test_ft_strncmp("123", "123\x00abc", 100, 0); // Null character in the second string
+    run_test_ft_strncmp("123", "123\0", 100, 0); // Null character in the second string
     run_test_ft_strncmp("\xff", "\x00", 1, 0xff); // Test unsigned char comparison
 
     // Run the test cases for ft_strnstr
@@ -823,5 +835,18 @@ int main()
     run_test_ft_strnstr("hello world", "x", 11, NULL); // Non-existent character
     run_test_ft_strnstr("hello world", "world", 10, NULL); // Needle starts at the limit of len
     draw_sep();
+
+    // Run the test cases for ft_strrchr
+    fn_to_test("ft_strrchr");
+    run_test_ft_strrchr("hello world", 'w', "world");
+    run_test_ft_strrchr("repeat repeat repeat", 'p', "peat repeat");
+    run_test_ft_strrchr("abcdefg", 'a', "abcdefg");
+    run_test_ft_strrchr("abcdefg", 'h', NULL); // Character not found
+    run_test_ft_strrchr("abcdefg", '\0', ""); // NULL character
+    run_test_ft_strrchr("", 'a', NULL); // Empty string
+    run_test_ft_strrchr("a\0b\0c", 'b', NULL); // NULL character in the middle of the string
+    run_test_ft_strrchr("a\0b\0c", '\0', ""); // NULL character at the end
+    draw_sep();
+
     return 0;
 }
