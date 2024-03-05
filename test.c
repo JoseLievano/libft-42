@@ -965,9 +965,6 @@ int main()
     const char *memcmp_str2 = "Hello, World!";
     const char *memcmp_str3 = "Hello";
     const char *memcmp_str4 = "";
-    char buffer1[20] = "Hello, world!";
-    char buffer2[20] = "Hello";
-    char buffer3[20] = "Hello, world!";
 
 // Normal cases
     run_test_ft_memcmp(memcmp_str1, memcmp_str3, 5, 0);  // Same first n characters
@@ -976,10 +973,8 @@ int main()
     // Edge cases
     run_test_ft_memcmp(memcmp_str1, memcmp_str2, 0, 0);   // Zero length
     run_test_ft_memcmp(memcmp_str4, memcmp_str4, 5, 0);   // Empty strings
-    // Now comparing buffer1 and buffer2, buffer2 should be shorter.
-    run_test_ft_memcmp(buffer1, buffer2, 20, /* expected return value based on actual buffer contents */);
-    // Comparing buffer2 and buffer3, buffer3 is longer.
-    run_test_ft_memcmp(buffer2, buffer3, 20, /* expected return value based on actual buffer contents */);
+    run_test_ft_memcmp(memcmp_str1, memcmp_str3, 6, ' '); // Comparison includes the null terminator of str3.
+    run_test_ft_memcmp(memcmp_str3, memcmp_str1, 6, -' '); // Comparison includes the null terminator of str3.
 
     draw_sep();
 
