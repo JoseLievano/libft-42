@@ -389,6 +389,7 @@ void run_test_ft_strlcpy(const char *src, size_t size, const char *expected)
     char *dest = (char *) malloc(1024 * sizeof(char));
     if (!dest)
         return;
+    ft_bzero(dest, 1024);
     size_t result = ft_strlcpy(dest, src, size);
 
     if (strcmp(dest, expected) == 0) {
