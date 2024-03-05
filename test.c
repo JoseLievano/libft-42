@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <limits.h>
+#include <fcntl.h>
 
 // Link to your libft library
 extern int ft_atoi(const char *str);
@@ -19,6 +21,7 @@ extern void	*ft_memmove(void *dest, const void *src, size_t len);
 extern void *ft_memset(void *str, int c, size_t len);
 extern void ft_putchar_fd(char c, int fd);
 extern void ft_putendl_fd(char *s, int fd);
+extern void ft_putnbr_fd(int n, int fd);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -240,6 +243,34 @@ void run_test_ft_putendl_fd(char *s, int fd)
     close(original_stdout);
 }
 
+void run_test_ft_putnbr_fd(int n, const char *expected)
+{
+    int fd[2];
+    if (pipe(fd) == -1)
+    {
+        perror("pipe");
+        exit(EXIT_FAILURE);
+    }
+
+    ft_putnbr_fd(n, fd[1]);
+    close(fd[1]);
+
+    char buffer[64];
+    ssize_t bytes_read = read(fd[0], buffer, sizeof(buffer) - 1);
+    buffer[bytes_read] = '\0'; // Null-terminate the string
+
+    if (strcmp(buffer, expected) == 0)
+    {
+        printf("Test passed: ft_putnbr_fd(%d) wrote \"%s\"\n", n, buffer);
+    }
+    else
+    {
+        printf("Test failed: ft_putnbr_fd(%d) wrote \"%s\", expected \"%s\"\n", n, buffer, expected);
+    }
+
+    close(fd[0]);
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -430,5 +461,19 @@ int main()
     run_test_ft_putendl_fd("42", 1); // Standard output (stdout)
     run_test_ft_putendl_fd("", 1); // Empty string to stdout
     draw_sep();
+
+
+    // Run the test cases for ft_putnbr_fd
+    fn_to_test("ft_putnbr_fd");
+    run_test_ft_putnbr_fd(123, "123");
+    run_test_ft_putnbr_fd(-456, "-456");
+    run_test_ft_putnbr_fd(0, "0");
+    run_test_ft_putnbr_fd(INT_MAX, "2147483647"); // INT_MAX
+    run_test_ft_putnbr_fd(INT_MIN, "-2147483648"); // INT_MIN
+    run_test_ft_putnbr_fd(10, "10");
+    run_test_ft_putnbr_fd(-1, "-1");
+    draw_sep();
+
+
     return 0;
 }
