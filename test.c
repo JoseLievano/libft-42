@@ -107,7 +107,13 @@ void run_test_ft_bzero(char *str, size_t len)
 
     ft_bzero(str, len);
 
-    int test = memcmp(str, original, len);
+    int test = 0;
+    for (size_t i = 0; i < len; i++) {
+        if (str[i] != 0) {
+            test = 1;
+            break;
+        }
+    }
 
     if (test == 0) {
         printf("Test passed: ft_bzero() successfully zeroed %zu bytes, result: %d\n", len, test);
