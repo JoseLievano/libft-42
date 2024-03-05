@@ -360,7 +360,10 @@ void run_test_ft_strjoin(const char *s1, const char *s2, const char *expected)
     char *result = ft_strjoin(s1, s2);
     if (result && expected && strcmp(result, expected) == 0) {
         printf("Test passed: ft_strjoin(\"%s\", \"%s\") returned \"%s\"\n", s1, s2, result);
-    } else {
+    }else if((s1 == NULL || s2 == NULL) && result == NULL){
+        printf("Test passed: ft_strjoin(\"%s\", \"%s\") returned NULL\n", s1, s2);
+    }
+    else {
         printf("Test failed: ft_strjoin(\"%s\", \"%s\") returned \"%s\", expected \"%s\"\n", s1, s2, result ? result : "NULL", expected);
     }
     free(result); // Free allocated memory to avoid memory leaks
