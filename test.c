@@ -27,6 +27,7 @@ extern char **ft_split(char const *s, char c);
 extern char *ft_strchr(const char *str, int c);
 extern char *ft_strdup(const char *str);
 extern void ft_striteri(char *s, void (*f)(unsigned int, char*));
+extern char *ft_strjoin(char const *s1, char const *s2);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -354,6 +355,17 @@ void run_test_ft_striteri(char *input, void (*f)(unsigned int, char*), char *exp
     free(test_str); // Clean up
 }
 
+void run_test_ft_strjoin(const char *s1, const char *s2, const char *expected)
+{
+    char *result = ft_strjoin(s1, s2);
+    if (result && expected && strcmp(result, expected) == 0) {
+        printf("Test passed: ft_strjoin(\"%s\", \"%s\") returned \"%s\"\n", s1, s2, result);
+    } else {
+        printf("Test failed: ft_strjoin(\"%s\", \"%s\") returned \"%s\", expected \"%s\"\n", s1, s2, result ? result : "NULL", expected);
+    }
+    free(result); // Free allocated memory to avoid memory leaks
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -610,6 +622,18 @@ int main()
     run_test_ft_striteri("\n\t", modify_char, "\n\n"); // Non-modifiable characters
     run_test_ft_striteri("1234", modify_char, "1357"); // Digits
     draw_sep();
+
+    //Run the test cases for ft_strjoin
+    fn_to_test("ft_strjoin");
+    run_test_ft_strjoin("Hello", "World", "HelloWorld");
+    run_test_ft_strjoin("", "World", "World");
+    run_test_ft_strjoin("Hello", "", "Hello");
+    run_test_ft_strjoin("", "", "");
+    run_test_ft_strjoin("NULL", "Test", "NULLTest"); // Edge case if one string is literally "NULL"
+    run_test_ft_strjoin(NULL, "Test", NULL); // Edge case if one string is a NULL pointer
+    run_test_ft_strjoin("Test", NULL, NULL); // Edge case if one string is a NULL pointer
+    draw_sep();
+
 
     return 0;
 }
