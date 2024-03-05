@@ -47,6 +47,6 @@ bonus:			$(OBJS) $(BONUS_OBJS)
 				ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 
 test:	libft.a
-		gcc -Wall -Wextra -Werror -o test test.c -L -lft
+		gcc -Wall -Wextra -Werror -o test test.c -L. -lft
 
 .PHONY:			all clean fclean re bonus test
