@@ -23,16 +23,25 @@ static int	is_in_set(char c, char const *set)
 	return (0);
 }
 
+static char *early_return(char const *s1, char const *set)
+{
+    if (!s1)
+        return (NULL);
+    if (!set){
+        return (ft_strdup(s1));
+    }
+}
+
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t	start;
 	size_t	end;
 	char	*trimmed_str;
 
-    if (!s1)
-        return (NULL);
-    if (!set)
-        return (ft_strdup(s1));
+    if (!s1 || !set)
+    {
+        return (early_return(s1, set));
+    }
 	start = 0;
 	end = ft_strlen(s1);
 	while (s1[start] && is_in_set(s1[start], set))
