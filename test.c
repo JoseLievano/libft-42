@@ -22,6 +22,7 @@ extern void *ft_memset(void *str, int c, size_t len);
 extern void ft_putchar_fd(char c, int fd);
 extern void ft_putendl_fd(char *s, int fd);
 extern void ft_putnbr_fd(int n, int fd);
+extern void ft_putstr_fd(char *s, int fd);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -271,6 +272,18 @@ void run_test_ft_putnbr_fd(int n, const char *expected)
     close(fd[0]);
 }
 
+void run_test_ft_putstr_fd(char *s, int fd)
+{
+    printf("Testing ft_putstr_fd with fd = %d\n", fd);
+    if (s == NULL) {
+        printf("Test skipped: String is NULL\n");
+    } else {
+        printf("Output: ");
+        ft_putstr_fd(s, fd); // Assuming it works similar to write, output will be visible on console
+        printf("\nTest for string \"%s\" completed.\n", s);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -472,6 +485,16 @@ int main()
     run_test_ft_putnbr_fd(INT_MIN, "-2147483648"); // INT_MIN
     run_test_ft_putnbr_fd(10, "10");
     run_test_ft_putnbr_fd(-1, "-1");
+    draw_sep();
+
+
+    // Add this code inside the main function, where you want to run the tests for ft_putstr_fd
+    fn_to_test("ft_putstr_fd");
+    run_test_ft_putstr_fd("Hello, world!", 1); // Standard output (stdout)
+    run_test_ft_putstr_fd("42", 1); // Standard output (stdout)
+    run_test_ft_putstr_fd("", 1); // Empty string to stdout
+    run_test_ft_putstr_fd(NULL, 1); // NULL string to stdout (edge case)
+    run_test_ft_putstr_fd("Error message\n", 2); // Error output (stderr)
     draw_sep();
 
 
