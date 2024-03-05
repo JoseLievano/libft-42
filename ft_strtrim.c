@@ -29,6 +29,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 	size_t	end;
 	char	*trimmed_str;
 
+    if (!s1)
+        return (NULL);
+    if (!set)
+        return (ft_strdup(s1));
 	start = 0;
 	end = ft_strlen(s1);
 	while (s1[start] && is_in_set(s1[start], set))
