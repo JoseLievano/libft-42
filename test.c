@@ -26,6 +26,7 @@ extern void ft_putstr_fd(char *s, int fd);
 extern char **ft_split(char const *s, char c);
 extern char *ft_strchr(const char *str, int c);
 extern char *ft_strdup(const char *str);
+extern void ft_striteri(char *s, void (*f)(unsigned int, char*));
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -41,6 +42,13 @@ void fn_to_test(const char *name)
     printf("\n");
     printf("Test for: %s *** \n", name);
     printf("\n");
+}
+
+// Helper function to modify characters
+void modify_char(unsigned int i, char *c) {
+    if (c) {
+        *c += i;
+    }
 }
 
 void run_test_ft_atoi(const char *input, int expected)
@@ -332,6 +340,21 @@ void run_test_ft_strdup(const char *input)
     free(result); // Don't forget to free the memory allocated by ft_strdup
 }
 
+void run_test_ft_striteri(char *input, void (*f)(unsigned int, char*), char *expected)
+{
+    char *test_str = strdup(input); // Duplicate input to avoid modifying literal strings
+    ft_striteri(test_str, f);
+
+    if (strcmp(test_str, expected) == 0) {
+        printf("Test passed: ft_striteri modified string to \"%s\"\n", test_str);
+    } else {
+        printf("Test failed: ft_striteri returned \"%s\", expected \"%s\"\n", test_str, expected);
+    }
+
+    free(test_str); // Clean up
+    draw_sep();
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -576,6 +599,18 @@ int main()
     run_test_ft_strdup("42 is the answer to everything");
     run_test_ft_strdup("A string with a \0 null byte"); // This will not show the null byte part
     run_test_ft_strdup("Special characters !@#$%^&*()");
+    draw_sep();
+
+
+    // Run the test cases for ft_striteri
+    fn_to_test("ft_striteri");
+    // Test cases
+    run_test_ft_striteri("abcd", modify_char, "aceg"); // Basic case
+    run_test_ft_striteri("", modify_char, ""); // Empty string
+    run_test_ft_striteri("zz", modify_char, "z{"); // Edge case with overflow potential
+    run_test_ft_striteri(" ", modify_char, " "); // Single space character
+    run_test_ft_striteri("\n\t", modify_char, "\n\t"); // Non-modifiable characters
+    run_test_ft_striteri("1234", modify_char, "2468"); // Digits
     draw_sep();
 
     return 0;
