@@ -16,6 +16,7 @@ extern int ft_isascii(int c);
 extern int ft_isprint(int c);
 extern char *ft_itoa(int n);
 extern void *ft_memchr(const void *str, int c, size_t n);
+extern int ft_memcmp(const void *s1, const void *s2, size_t n);
 extern void *ft_memcpy(void *dest, const void *src, size_t len);
 extern void	*ft_memmove(void *dest, const void *src, size_t len);
 extern void *ft_memset(void *str, int c, size_t len);
@@ -539,6 +540,16 @@ void run_test_ft_toupper(int input, int expected)
     }
 }
 
+void run_test_ft_memcmp(const void *s1, const void *s2, size_t n, int expected)
+{
+    int result = ft_memcmp(s1, s2, n);
+    if (result == expected) {
+        printf("Test passed: ft_memcmp() returned %d for n = %zu\n", result, n);
+    } else {
+        printf("Test failed: ft_memcmp() returned %d, expected %d for n = %zu\n", result, expected, n);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -948,6 +959,26 @@ int main()
     run_test_ft_toupper('\t', '\t'); // Tab should remain unchanged
     run_test_ft_toupper('!', '!'); // Non-alphabetic should remain unchanged
     run_test_ft_toupper('@', '@'); // Non-alphabetic should remain unchanged
+    draw_sep();
+
+    // Run the test cases for ft_memcmp
+    fn_to_test("ft_memcmp");
+    const char *memcmp_str1 = "Hello, world!";
+    const char *memcmp_str2 = "Hello, World!";
+    const char *memcmp_str3 = "Hello";
+    const char *memcmp_str4 = "";
+
+// Normal cases
+    run_test_ft_memcmp(memcmp_str1, memcmp_str2, 13, 0); // Identical strings
+    run_test_ft_memcmp(memcmp_str1, memcmp_str3, 5, 0);  // Same first n characters
+    run_test_ft_memcmp(memcmp_str1, memcmp_str2, 7, 32); // Different characters (uppercase vs lowercase)
+
+// Edge cases
+    run_test_ft_memcmp(memcmp_str1, memcmp_str2, 0, 0);   // Zero length
+    run_test_ft_memcmp(memcmp_str4, memcmp_str4, 5, 0);   // Empty strings
+    run_test_ft_memcmp(memcmp_str1, memcmp_str3, 20, 119); // Length beyond string length, str1 longer than str3
+    run_test_ft_memcmp(memcmp_str3, memcmp_str1, 20, -119); // Length beyond string length, str3 shorter than str1
+
     draw_sep();
 
     return 0;
