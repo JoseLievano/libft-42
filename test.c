@@ -604,7 +604,6 @@ int main()
 
     // Run the test cases for ft_striteri
     fn_to_test("ft_striteri");
-    // Test cases
     run_test_ft_striteri("abcd", modify_char, "aceg"); // Basic case
     run_test_ft_striteri("", modify_char, ""); // Empty string
     run_test_ft_striteri("zz", modify_char, "z{"); // Edge case with overflow potential
