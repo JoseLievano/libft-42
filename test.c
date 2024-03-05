@@ -386,7 +386,9 @@ void run_test_ft_strlcat(char *dest, const char *src, size_t size, size_t expect
 
 void run_test_ft_strlcpy(const char *src, size_t size, const char *expected)
 {
-    char dest[1024]; // Adjust the size as needed for your tests
+    char *dest = (char *) malloc(1024 * sizeof(char));
+    if (!dest)
+        return;
     size_t result = ft_strlcpy(dest, src, size);
 
     if (strcmp(dest, expected) == 0) {
@@ -395,6 +397,8 @@ void run_test_ft_strlcpy(const char *src, size_t size, const char *expected)
         printf("Test failed: ft_strlcpy(dest, \"%s\", %zu) copied \"%s\", expected \"%s\"\n", src, size, dest, expected);
     }
     printf("Return value: %zu, expected length: %zu\n", result, strlen(src));
+
+    free(dest);
 }
 
 int main()
@@ -686,7 +690,7 @@ int main()
 
     // Run the test cases for ft_strlcpy
     fn_to_test("ft_strlcpy");
-    run_test_ft_strlcpy("Hello, World!", 5, "Hello");
+    run_test_ft_strlcpy("Hello, World!", 5, "Hell");
     run_test_ft_strlcpy("Test", 10, "Test"); // size greater than src length
     run_test_ft_strlcpy("Libft", 0, ""); // empty size
     run_test_ft_strlcpy("", 5, ""); // empty src
