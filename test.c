@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <bsd/string.h>
+#include <string.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <limits.h>
@@ -370,16 +370,18 @@ void run_test_ft_strjoin(const char *s1, const char *s2, const char *expected)
     free(result); // Free allocated memory to avoid memory leaks
 }
 
-void run_test_ft_strlcat(char *dest, const char *src, size_t size)
+void run_test_ft_strlcat(char *dest, const char *src, size_t size, size_t expected, char *expected_result)
 {
-    char dest_copy[256]; // Ensure this is large enough for your tests
-    strncpy(dest_copy, dest, sizeof(dest_copy));
+    char buffer[1024]; // Ensure the buffer is large enough for the test cases
+    strcpy(buffer, dest); // Copy dest to buffer to preserve dest for the expected result comparison
+    size_t result = ft_strlcat(buffer, src, size);
 
-    size_t result_ft = ft_strlcat(dest, src, size);
-    size_t result_real = strlcat(dest_copy, src, size);
-
-    const char *pass = (result_ft == result_real) && (strcmp(dest, dest_copy) == 0) ? "passed" : "failed";
-    printf("Test %s: ft_strlcat(\"%s\", \"%s\", %zu) returned %zu, strlcat returned %zu\n", pass, dest, src, size, result_ft, result_real);
+    if (result == expected && strcmp(buffer, expected_result) == 0) {
+        printf("Test passed: ft_strlcat(\"%s\", \"%s\", %zu) returned %zu and dest is \"%s\"\n", dest, src, size, result, buffer);
+    } else {
+        printf("Test failed: ft_strlcat(\"%s\", \"%s\", %zu) returned %zu and dest is \"%s\", expected return %zu and dest \"%s\"\n", dest, src, size, result, buffer, expected, expected_result);
+    }
+    draw_sep();
 }
 
 int main()
@@ -652,37 +654,21 @@ int main()
 
 
     // Run the test cases for ft_strlcat
+    char dest[50]; // Adjust size as needed for your tests
+
     fn_to_test("ft_strlcat");
-    // Test 1: Normal concatenation
-    char dest1[20] = "Hello";
-    run_test_ft_strlcat(dest1, " World", sizeof(dest1));
-    // Test 2: Buffer too small to concatenate
-    char dest2[10] = "Hello";
-    run_test_ft_strlcat(dest2, " World", sizeof(dest2));
-    // Test 3: Empty source string
-    char dest3[20] = "Hello";
-    run_test_ft_strlcat(dest3, "", sizeof(dest3));
-    // Test 4: Empty destination buffer
-    char dest4[20] = "";
-    run_test_ft_strlcat(dest4, "World", sizeof(dest4));
-    // Test 5: Size parameter is zero
-    char dest5[20] = "Hello";
-    run_test_ft_strlcat(dest5, " World", 0);
-    // Test 6: Size parameter is smaller than the destination string length
-    char dest6[20] = "Hello";
-    run_test_ft_strlcat(dest6, " World", 3);
-    // Test 7: Size parameter is exactly the destination string length
-    char dest7[20] = "Hello";
-    run_test_ft_strlcat(dest7, " World", 5);
-    // Test 8: Size parameter is one less than the destination string length
-    char dest8[20] = "Hello";
-    run_test_ft_strlcat(dest8, " World", 4);
-    // Test 9: Large source string
-    char dest9[50] = "Hello";
-    run_test_ft_strlcat(dest9, " this is a very long world that won't fully fit", sizeof(dest9));
-    // Test 10: Size parameter is just enough to fit the source string
-    char dest10[20] = "12345";
-    run_test_ft_strlcat(dest10, "6789", 10);
+    strcpy(dest, "Hello");
+    run_test_ft_strlcat(dest, " World", 50, 11, "Hello World"); // Basic concat
+    strcpy(dest, "Hello");
+    run_test_ft_strlcat(dest, "", 50, 5, "Hello"); // Empty src
+    strcpy(dest, "");
+    run_test_ft_strlcat(dest, " World", 50, 6, " World"); // Empty dest
+    strcpy(dest, "Hello");
+    run_test_ft_strlcat(dest, " World", 5, 11, "Hello"); // Size too small, no concat
+    strcpy(dest, "Hello");
+    run_test_ft_strlcat(dest, " World", 10, 11, "Hello Wor"); // Size limits concat
+    strcpy(dest, "Hello");
+    run_test_ft_strlcat(dest, " World", 0, 5, "Hello"); // Size is 0, no concat
     draw_sep();
 
     return 0;
