@@ -29,6 +29,7 @@ extern char *ft_strdup(const char *str);
 extern void ft_striteri(char *s, void (*f)(unsigned int, char*));
 extern char *ft_strjoin(char const *s1, char const *s2);
 extern size_t ft_strlcat(char *dest, const char *src, size_t size);
+extern size_t ft_strlcpy(char *dest, const char *src, size_t size);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -381,7 +382,19 @@ void run_test_ft_strlcat(char *dest, const char *src, size_t size, size_t expect
     } else {
         printf("Test failed: ft_strlcat(\"%s\", \"%s\", %zu) returned %zu and dest is \"%s\", expected return %zu and dest \"%s\"\n", dest, src, size, result, buffer, expected, expected_result);
     }
-    draw_sep();
+}
+
+void run_test_ft_strlcpy(const char *src, size_t size, const char *expected)
+{
+    char dest[1024]; // Adjust the size as needed for your tests
+    size_t result = ft_strlcpy(dest, src, size);
+
+    if (strcmp(dest, expected) == 0) {
+        printf("Test passed: ft_strlcpy(dest, \"%s\", %zu) copied \"%s\"\n", src, size, dest);
+    } else {
+        printf("Test failed: ft_strlcpy(dest, \"%s\", %zu) copied \"%s\", expected \"%s\"\n", src, size, dest, expected);
+    }
+    printf("Return value: %zu, expected length: %zu\n", result, strlen(src));
 }
 
 int main()
@@ -668,7 +681,18 @@ int main()
     strcpy(dest, "Hello");
     run_test_ft_strlcat(dest, " World", 10, 11, "Hello Wor"); // Size limits concat
     strcpy(dest, "Hello");
-    run_test_ft_strlcat(dest, " World", 0, 5, "Hello"); // Size is 0, no concat
+    run_test_ft_strlcat(dest, " World", 0, 6, "Hello"); // Size is 0, no concat
+    draw_sep();
+
+    // Run the test cases for ft_strlcpy
+    fn_to_test("ft_strlcpy");
+    run_test_ft_strlcpy("Hello, World!", 5, "Hello");
+    run_test_ft_strlcpy("Test", 10, "Test"); // size greater than src length
+    run_test_ft_strlcpy("Libft", 0, ""); // empty size
+    run_test_ft_strlcpy("", 5, ""); // empty src
+    run_test_ft_strlcpy("Edge case", 9, "Edge cas"); // size equals src length
+    run_test_ft_strlcpy("Another test", 1, ""); // non-zero size that's too small
+    run_test_ft_strlcpy("Lorem ipsum dolor sit amet", 20, "Lorem ipsum dolor s"); // random text
     draw_sep();
 
     return 0;
