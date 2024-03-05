@@ -23,6 +23,7 @@ extern void ft_putchar_fd(char c, int fd);
 extern void ft_putendl_fd(char *s, int fd);
 extern void ft_putnbr_fd(int n, int fd);
 extern void ft_putstr_fd(char *s, int fd);
+extern char **ft_split(char const *s, char c);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -284,6 +285,30 @@ void run_test_ft_putstr_fd(char *s, int fd)
     }
 }
 
+void run_test_ft_split(char const *s, char c)
+{
+    if (s == NULL) {
+        printf("Test skipped: String is NULL\n");
+        return;
+    }
+
+    printf("Testing ft_split with delimiter '%c'\n", c);
+    char **result = ft_split(s, c);
+
+    if (result == NULL) {
+        printf("Test failed: ft_split(\"%s\", '%c') returned NULL\n", s, c);
+        return;
+    }
+
+    printf("Output:\n");
+    for (int i = 0; result[i] != NULL; i++) {
+        printf(" - \"%s\"\n", result[i]);
+        free(result[i]); // Assuming your ft_split allocates memory for each string
+    }
+    free(result); // Assuming your ft_split allocates memory for the array
+    printf("Test for string \"%s\" completed.\n", s);
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -497,6 +522,18 @@ int main()
     run_test_ft_putstr_fd("Error message\n", 2); // Error output (stderr)
     draw_sep();
 
+    // Run the test cases for ft_split
+    fn_to_test("ft_split");
+    run_test_ft_split("Hello World!", ' '); // Standard case with spaces
+    run_test_ft_split("42School@42", '4'); // Delimiter at the beginning
+    run_test_ft_split("Lorem-ipsum-dolor-sit-amet", '-'); // Delimiter in between
+    run_test_ft_split("EndsWithDelimiter;", ';'); // Delimiter at the end
+    run_test_ft_split("", ' '); // Empty string
+    run_test_ft_split("NoDelimiterInThisString", ','); // No delimiter in the string
+    run_test_ft_split("DelimiterAtTheEndOnly:", ':'); // Delimiter at the end only
+    run_test_ft_split("Only;Delimiter;String", ';'); // String with only delimiters
+    run_test_ft_split(NULL, ','); // NULL string
+    draw_sep();
 
     return 0;
 }
