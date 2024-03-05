@@ -24,6 +24,7 @@ extern void ft_putendl_fd(char *s, int fd);
 extern void ft_putnbr_fd(int n, int fd);
 extern void ft_putstr_fd(char *s, int fd);
 extern char **ft_split(char const *s, char c);
+extern char *ft_strchr(const char *str, int c);
 extern size_t	ft_strlen(const char *str);
 
 void draw_sep(void)
@@ -309,6 +310,16 @@ void run_test_ft_split(char const *s, char c)
     printf("Test for string \"%s\" completed.\n", s);
 }
 
+void run_test_ft_strchr(const char *input, int character, char *expected)
+{
+    char *result = ft_strchr(input, character);
+    if ((result == expected) || (result && expected && strcmp(result, expected) == 0)) {
+        printf("Test passed: ft_strchr(\"%s\", '%c') returned \"%s\"\n", input, character, result);
+    } else {
+        printf("Test failed: ft_strchr(\"%s\", '%c') returned \"%s\", expected \"%s\"\n", input, character, result, expected);
+    }
+}
+
 int main()
 {
     // Run the test cases for ft_atoi
@@ -534,6 +545,17 @@ int main()
     run_test_ft_split("Only;Delimiter;String", ';'); // String with only delimiters
     run_test_ft_split(NULL, ','); // NULL string
     draw_sep();
+
+    // Run the test cases for ft_strchr
+    fn_to_test("ft_strchr");
+    run_test_ft_strchr("Hello, World!", 'W', "World!");
+    run_test_ft_strchr("abcdef", 'a', "abcdef");
+    run_test_ft_strchr("abcdef", 'd', "def");
+    run_test_ft_strchr("abcdef", 'z', NULL); // Character not found
+    run_test_ft_strchr("abcdef", '\0', ""); // Null terminator
+    run_test_ft_strchr("", 'a', NULL); // Empty string
+    draw_sep();
+
 
     return 0;
 }
