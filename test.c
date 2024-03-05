@@ -471,7 +471,6 @@ void run_test_ft_strncmp(const char *str1, const char *str2, size_t len, int exp
     } else {
         printf("Test failed: ft_strncmp(\"%s\", \"%s\", %zu) returned %d, expected %d\n", str1, str2, len, result, expected);
     }
-    draw_sep();
 }
 
 void run_test_ft_strnstr(const char *haystack, const char *needle, size_t len, const char *expected)
@@ -852,10 +851,10 @@ int main()
     fn_to_test("ft_strlen");
     run_test_ft_strlen("", 0); // Empty string
     run_test_ft_strlen("Hello", 5); // Normal string
-    run_test_ft_strlen("Another string with spaces", 27); // String with spaces
+    run_test_ft_strlen("Another string with spaces", 26); // String with spaces
     run_test_ft_strlen("1234567890", 10); // Numeric string
-    run_test_ft_strlen("String with\nnewline", 21); // String with newline
-    run_test_ft_strlen("Non-printable \x01\x02\x03", 18); // String with non-printable characters
+    run_test_ft_strlen("String with\nnewline", 19); // String with newline
+    run_test_ft_strlen("Non-printable \x01\x02\x03", 17); // String with non-printable characters
     draw_sep();
 
 
@@ -899,7 +898,7 @@ int main()
     // Run the test cases for ft_strrchr
     fn_to_test("ft_strrchr");
     run_test_ft_strrchr("hello world", 'w', "world");
-    run_test_ft_strrchr("repeat repeat repeat", 'p', "peat repeat");
+    run_test_ft_strrchr("repeat repeat repeat", 'p', "peat");
     run_test_ft_strrchr("abcdefg", 'a', "abcdefg");
     run_test_ft_strrchr("abcdefg", 'h', NULL); // Character not found
     run_test_ft_strrchr("abcdefg", '\0', ""); // NULL character
@@ -911,7 +910,7 @@ int main()
     // Add this code in your main function to run tests for ft_strtrim
     fn_to_test("ft_strtrim");
     run_test_ft_strtrim(" Hello World! ", " ", "Hello World!");
-    run_test_ft_strtrim("Hello World!", "Hdle", "o Wor");
+    run_test_ft_strtrim("Hello World!", "Hdle", "o World!");
     run_test_ft_strtrim("Hello World!", "xyz", "Hello World!");
     run_test_ft_strtrim("xyzHello World!xyz", "xyz", "Hello World!");
     run_test_ft_strtrim("", " ", "");
