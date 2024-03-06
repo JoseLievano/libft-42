@@ -887,6 +887,8 @@ int main()
     run_test_ft_strncmp("1234", "123", 3, 0); // Compare part of the string
     run_test_ft_strncmp("123", "123\0", 100, 0); // Null character in the second string
     run_test_ft_strncmp("\xff", "\x00", 1, 0xff); // Test unsigned char comparison
+	
+	draw_sep();
 
     // Run the test cases for ft_strnstr
     fn_to_test("ft_strnstr");
