@@ -890,6 +890,7 @@ int main()
 	
 	draw_sep();
 
+	
     // Run the test cases for ft_strnstr
     fn_to_test("ft_strnstr");
     run_test_ft_strnstr("hello world", "world", 11, "world");
