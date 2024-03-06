@@ -23,15 +23,6 @@ static int	is_in_set(char c, char const *set)
 	return (0);
 }
 
-static char	*early_return(char const *s1, char const *set)
-{
-	if (!s1)
-		return (NULL);
-	if (!set)
-		return (ft_strdup(s1));
-	return (NULL);
-}
-
 static size_t	find_start(char const *s1, char const *set)
 {
 	size_t	start;
@@ -73,7 +64,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 
 	if (!s1 || !set)
 	{
-		return (early_return(s1, set));
+		if (!s1)
+			return (NULL);
+		else
+			return (ft_strdup(s1));
 	}
 	start = find_start(s1, set);
 	end = find_end(s1, set, start);

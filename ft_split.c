@@ -14,80 +14,81 @@
 
 static size_t	count_words(char const *s, char c)
 {
-	size_t	i;
 	size_t	count;
+	size_t	i;
 
-	i = 0;
 	count = 0;
-	while (s[i])
+	i = 0;
+	while (*(s + i))
 	{
-		if (s[i] != c)
+		if (*(s + i) != c)
 		{
-			while (s[i] != c && s[i])
-				i++;
 			count++;
+			while (*(s + i) && *(s + i) != c)
+				i++;
 		}
-		else
+		else if (*(s + i) == c)
 			i++;
 	}
 	return (count);
 }
 
-static void	free_split(char **split, size_t k)
+static size_t	word_len(char const *s, char c)
 {
-	while (k > 0)
-		free(split[--k]);
-	free(split);
+	size_t	i;
+
+	i = 0;
+	while (*(s + i) && *(s + i) != c)
+		i++;
+	return (i);
 }
 
-static char	*malloc_word(char const *s, size_t start, size_t end)
+static void	free_split(size_t i, char **array)
 {
-	char	*word;
-
-	word = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!word)
-		return (NULL);
-	ft_strlcpy(word, s + start, end - start + 1);
-	return (word);
+	while (i > 0)
+	{
+		i--;
+		free(*(array + i));
+	}
+	free(array);
 }
 
-static char	**spliter(char const *s, char c, char **split)
+static char	**get_splits(char const *s, char c, char **split, size_t words)
 {
 	size_t	i;
 	size_t	j;
-	size_t	k;
 
 	i = 0;
-	k = 0;
-	while (s[i])
+	j = 0;
+	while (i < words)
 	{
-		if (s[i] != c)
+		while (*(s + j) && *(s + j) == c)
+			j++;
+		*(split + i) = ft_substr(s, j, word_len(&*(s + j), c));
+		if (!*(split + i))
 		{
-			j = i;
-			while (s[i] != c && s[i])
-				i++;
-			split[k] = malloc_word(s, j, i);
-			if (!split[k])
-			{
-				free_split(split, k);
-				return (NULL);
-			}
-			k++;
+			free_split(i, split);
+			return (NULL);
 		}
-		else
-			i++;
+		while (*(s + j) && *(s + j) != c)
+			j++;
+		i++;
 	}
-	split[k] = NULL;
+	*(split + i) = NULL;
 	return (split);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**split;
+	size_t	words;
 
-	split = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1));
+	if (!s)
+		return (NULL);
+	words = count_words(s, c);
+	split = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!split)
 		return (NULL);
-	split = spliter(s, c, split);
+	split = get_splits(s, c, split, words);
 	return (split);
 }
