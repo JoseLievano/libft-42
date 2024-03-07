@@ -6,7 +6,7 @@
 /*   By: jlievano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 01:03:17 by jlievano          #+#    #+#             */
-/*   Updated: 2024/03/04 01:04:42 by jlievano         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:12:45 by jlievano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}		t_list;
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
