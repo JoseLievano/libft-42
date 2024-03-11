@@ -6,7 +6,7 @@
 #    By: jlievano <jlievano@student.42luxembourg.lu>+#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/23 08:19:28 by jlievano          #+#    #+#              #
-#    Updated: 2024/03/06 18:07:37 by jlievano         ###   ########.fr        #
+#    Updated: 2024/03/11 15:25:54 by jlievano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRCS			=	ft_isalnum.c ft_isprint.c ft_memcmp.c  ft_putchar_fd.c ft_split.c \
 
 OBJS			=	$(SRCS:.c=.o)
 
-BONUS			=	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c
+BONUS			=	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
+				ft_lstadd_back.c
 
 BONUS_OBJS		=	$(BONUS:.c=.o)
 
