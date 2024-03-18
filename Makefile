@@ -21,7 +21,7 @@ SRCS			=	ft_isalnum.c ft_isprint.c ft_memcmp.c  ft_putchar_fd.c ft_split.c \
 OBJS			=	$(SRCS:.c=.o)
 
 BONUS			=	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
-				ft_lstadd_back.c
+				ft_lstadd_back.c ft_lstdelone.c
 
 BONUS_OBJS		=	$(BONUS:.c=.o)
 
